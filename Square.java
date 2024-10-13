@@ -33,6 +33,15 @@ public class Square {
     }
 
     /**
+     * Retorna se o quadrado está ou não visivel.
+     * @return boolean isVisible
+     */
+    
+    public boolean isVisible() {
+        return this.isVisible;
+    }
+
+    /**
      * Definir nome para o quadrado.
      */
 
@@ -44,7 +53,7 @@ public class Square {
      * Ativa o quadrado.
      */
     
-    public void activate() {
+    public void setVisible() {
         this.isVisible = true;
     }
 }
