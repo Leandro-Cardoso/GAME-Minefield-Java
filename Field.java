@@ -16,6 +16,16 @@ public class Field {
         this.generateField();
     }
 
+    private void createSquares() {
+        for (int y = 0; y < this.sizeY; y++) {
+            for (int x = 0; x < this.sizeX; x++) {
+                Square square = new Square(y, x);
+
+                this.field[y][x] = square;
+            }
+        }
+    }
+
     private void addBomb(int x, int y) {
         Square bomb = new Bomb(x, y);
         this.field[y][x] = bomb;
@@ -37,7 +47,7 @@ public class Field {
                 x = generator.nextInt(this.sizeX);
                 y = generator.nextInt(this.sizeY);
 
-                if (this.field[y][x] == null) {
+                if (this.field[y][x].getName() != 'B') {
                     break;
                 }
             }
@@ -46,12 +56,35 @@ public class Field {
         }
     }
 
+    private void sumBombs() {
+        for (Square bomb : this.bombs) {
+            for (int y = bomb.getY() - 1; y < y + 2; y++) {
+                for (int x = bomb.getX() - 1; x < x + 2; x++) {
+                    if (y > -1 && y < this.sizeY && x > -1 && x < this.sizeX){
+                        if (this.field[y][x].getName() != 'B') {
+                            if (this.field[y][x].getName() == ' ') {
+                                this.field[y][x].setName('1');
+                            }
+                            else {
+                                char newName = this.field[y][x].getName();
+                                newName++;
+                                this.field[y][x].setName(newName);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     private void generateField() {
+        this.createSquares();
         this.generateBombs();
+        this.sumBombs();
     }
 
     /**
-     * Retorna uma "String" com o campo.
+     * Retorna uma "String" com o campo gerado.
      * @return String str
      */
     
@@ -61,7 +94,7 @@ public class Field {
         for (int y = 0; y < this.sizeY; y++){
             str += "\n";
             for (int x = 0; x < this.sizeX; x++) {
-                str += " " + (this.field[y][x] == null ? " " : this.field[y][x].getName());
+                str += " " + this.field[y][x].getName();
             }
         }
         str += "\n";

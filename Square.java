@@ -3,13 +3,15 @@
  */
 
 public class Square {
-    private char name = ' ';
+    private char name;
     private int x, y;
-    private boolean isVisible = false;
+    private boolean isVisible;
 
     public Square(int x, int y) {
+        this.name = ' ';
         this.x = x;
         this.y = y;
+        this.isVisible = false;
     }
 
     /**
