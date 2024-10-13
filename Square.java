@@ -3,15 +3,13 @@
  */
 
 public class Square {
-    private char name;
+    private char name = ' ';
     private int x, y;
-    private boolean isVisible;
+    private boolean isVisible = false;
 
     public Square(int x, int y) {
-        this.name = ' ';
         this.x = x;
         this.y = y;
-        this.isVisible = false;
     }
 
     /**
@@ -30,6 +28,15 @@ public class Square {
 
     public int getY() {
         return this.y;
+    }
+
+    /**
+     * Retorna o nome do quadrado.
+     * @return char name
+     */
+
+    public char getName() {
+        return this.name;
     }
 
     /**
