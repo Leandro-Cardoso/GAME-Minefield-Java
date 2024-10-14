@@ -150,18 +150,64 @@ public class Field {
     
     public String str() {
         String str = "";
+        String RESET = "\u001B[0m";
+        String BLUE = "\u001B[34m";
+        String CYAN = "\u001B[36m";
+        String GREEN = "\u001B[32m";
+        String RED = "\u001B[31m";
 
         for (int y = 0; y < this.sizeY; y++){
             str += "\n";
 
+            if (y == 0) {
+                str += "   ";
+
+                for (int x = 0; x < this.sizeX; x++) {
+                    if ((x + 1) % 2 == 0) {
+                        str += CYAN;
+                    }
+                    else {
+                        str += BLUE;
+                    }
+
+                    if (x < 9) {
+                        str += " ";
+                    }
+                    
+                    str += " " + (x + 1);
+                }
+
+                str += RESET + "\n";
+            }
+
             for (int x = 0; x < this.sizeX; x++) {
-                str += " ";
+                str += "  ";
+
+                if (x == 0) {
+                    if ((y + 1) % 2 == 0) {
+                        str += CYAN;
+                    }
+                    else {
+                        str += BLUE;
+                    }
+
+                    if (y < 9) {
+                        str += " ";
+                    }
+                    
+                    str += (y + 1) + RESET + " ";
+                }
 
                 if (this.field[y][x].isVisible()) {
-                    str += (this.field[y][x].getName() == '0' ? ' ' : this.field[y][x].getName());
+                    if (this.field[y][x].getName() == 'B') {
+                        str += RED + this.field[y][x].getName() + RESET;
+                    }
+                    else {
+                        str += (this.field[y][x].getName() == '0' ? '.' : this.field[y][x].getName());
+                    }
                 }
                 else {
-                    str += this.invisibleSquare;
+                    str += GREEN + this.invisibleSquare + RESET;
                 }
             }
         }
@@ -169,5 +215,51 @@ public class Field {
         str += "\n";
 
         return str;
+    }
+
+    /**
+     * Retorna o tamanho em colunas do campo.
+     * @return int sizeX
+     */
+    
+    public int getSizeX() {
+        return this.sizeX;
+    }
+
+    /**
+     * Retorna o tamanho em linhas do campo.
+     * @return int sizeY
+     */
+
+    public int getSizeY() {
+        return this.sizeY;
+    }
+
+    /**
+     * Retorna se ouve uma vitoria ou nao.
+     * @return boolean isVictory
+     */
+    
+    public boolean isVictory() {
+        int count = 0;
+
+        for (Square[] line : this.field) {
+            for (Square square : line) {
+                if (square.isVisible()) {
+                    count++;
+                }
+            }
+        }
+
+        return (count + this.bombs.length == this.size) ? true : false;
+    }
+
+    /**
+     * Retorna se ouve uma derrota ou nao.
+     * @return boolean isDefeat
+     */
+    
+    public boolean isDefeat() {
+        return (this.bombs[0].isVisible()) ? true : false;
     }
 }
