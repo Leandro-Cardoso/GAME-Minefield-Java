@@ -115,19 +115,28 @@ public class Field {
     }
     
     /**
-     * Ativa um determinado quadrado em x coluna e y linha.
-     * @param int x
-     * @param int y
+     * Ativa um determinado quadrado em x coluna e y linha, se esse quadrado for 'B' (bomba) ativa todas as bombas, se esse quadrado for '0' (sem bomba no redor) ativa todos os espaços ao redor de forma recursiva.
+     * @param x
+     * @param y
      */
     
     public void activate(int x, int y) {
         if (this.field[y][x].getName() == 'B') {
-            // ATIVAR TODAS AS BOMBAS
             this.activateBombs();
         }
         else if (this.field[y][x].getName() == '0') {
-            // ATIVAR O REDOR
             this.field[y][x].setVisible();
+
+            for (int dy = -1; dy <= 1; dy++) {
+                for (int dx = -1; dx <= 1; dx++) {
+                    int nx = x + dx;
+                    int ny = y + dy;
+    
+                    if (nx >= 0 && nx < this.sizeX && ny >= 0 && ny < this.sizeY && !this.field[ny][nx].isVisible()) {
+                        this.activate(nx, ny);
+                    }
+                }
+            }
         }
         else {
             this.field[y][x].setVisible();
