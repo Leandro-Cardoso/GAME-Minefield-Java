@@ -33,6 +33,9 @@ public class Main {
             if (in == back) {
                 break;
             }
+            else if (in == -1) {
+                SoundPlayer.playError();
+            }
         }
     }
 
@@ -56,6 +59,9 @@ public class Main {
 
             if (in == back) {
                 break;
+            }
+            else if (in == -1) {
+                SoundPlayer.playError();
             }
         }
     }
@@ -95,6 +101,7 @@ public class Main {
                 Main.exit();
             }
             else if (y == -1) {
+                SoundPlayer.playError();
                 continue;
             }
 
@@ -104,6 +111,7 @@ public class Main {
                 Main.exit();
             }
             else if (x == -1) {
+                SoundPlayer.playError();
                 continue;
             }
 
