@@ -8,6 +8,7 @@ public class Field {
     private int sizeX, sizeY, size, numBombs;
     private Square[][] field;
     private Square[] bombs;
+    private char invisibleSquare;
 
     public Field(int sizeX, int sizeY) {
         this.sizeX = sizeX;
@@ -16,6 +17,7 @@ public class Field {
         this.numBombs = this.size / 10;
         this.field = new Square[sizeY][sizeX];
         this.bombs = new Square[numBombs];
+        this.invisibleSquare = '?';
 
         this.generateField();
     }
@@ -106,6 +108,32 @@ public class Field {
         this.sumBombs();
     }
 
+    private void activateBombs() {
+        for (Square bomb : this.bombs) {
+            bomb.setVisible();
+        }
+    }
+    
+    /**
+     * Ativa um determinado quadrado em x coluna e y linha.
+     * @param int x
+     * @param int y
+     */
+    
+    public void activate(int x, int y) {
+        if (this.field[y][x].getName() == 'B') {
+            // ATIVAR TODAS AS BOMBAS
+            this.activateBombs();
+        }
+        else if (this.field[y][x].getName() == '0') {
+            // ATIVAR O REDOR
+            this.field[y][x].setVisible();
+        }
+        else {
+            this.field[y][x].setVisible();
+        }
+    }
+    
     /**
      * Retorna uma "String" com o campo gerado.
      * @return String str
@@ -116,17 +144,21 @@ public class Field {
 
         for (int y = 0; y < this.sizeY; y++){
             str += "\n";
+
             for (int x = 0; x < this.sizeX; x++) {
-                str += " " + (this.field[y][x].getName() == '0' ? ' ' : this.field[y][x].getName());
+                str += " ";
+
+                if (this.field[y][x].isVisible()) {
+                    str += (this.field[y][x].getName() == '0' ? ' ' : this.field[y][x].getName());
+                }
+                else {
+                    str += this.invisibleSquare;
+                }
             }
         }
+
         str += "\n";
 
         return str;
-    }
-
-    public static void main(String[] args) {
-        Field field = new Field(20, 10);
-        System.out.println(field.str());
     }
 }
