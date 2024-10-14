@@ -1,5 +1,9 @@
 import java.util.Random;
 
+/**
+ * Gera um campo minado de tamanho x colunas e y linhas.
+ */
+
 public class Field {
     private int sizeX, sizeY, size, numBombs;
     private Square[][] field;
@@ -31,7 +35,7 @@ public class Field {
         this.field[y][x] = bomb;
 
         for (int i = 0; i < this.bombs.length; i++) {
-            if (this.bombs[i] != bomb) {
+            if (this.bombs[i] == null) {
                 this.bombs[i] = bomb;
                 break;
             }
@@ -56,22 +60,41 @@ public class Field {
         }
     }
 
+    private void sumBomb(int x, int y) {
+        if (this.field[y][x].getName() != 'B') {
+            char newName = this.field[y][x].getName();
+            newName++;
+            this.field[y][x].setName(newName);
+        }
+    }
+    
     private void sumBombs() {
         for (Square bomb : this.bombs) {
-            for (int y = bomb.getY() - 1; y < y + 2; y++) {
-                for (int x = bomb.getX() - 1; x < x + 2; x++) {
-                    if (y > -1 && y < this.sizeY && x > -1 && x < this.sizeX){
-                        if (this.field[y][x].getName() != 'B') {
-                            if (this.field[y][x].getName() == ' ') {
-                                this.field[y][x].setName('1');
-                            }
-                            else {
-                                char newName = this.field[y][x].getName();
-                                newName++;
-                                this.field[y][x].setName(newName);
-                            }
-                        }
-                    }
+            int x = bomb.getX();
+            int y = bomb.getY();
+
+            if (y - 1 > -1) {
+                if (x - 1 > -1) {
+                    this.sumBomb(x - 1, y - 1);
+                }
+                this.sumBomb(x, y - 1);
+                if (x + 1 < this.sizeX) {
+                    this.sumBomb(x + 1, y - 1);
+                }
+            }
+            if (x - 1 > -1) {
+                this.sumBomb(x - 1, y);
+            }
+            if (x + 1 < this.sizeX) {
+                this.sumBomb(x + 1, y);
+            }
+            if (y + 1 < this.sizeY) {
+                if (x - 1 > -1) {
+                    this.sumBomb(x - 1, y + 1);
+                }
+                this.sumBomb(x, y + 1);
+                if (x + 1 < this.sizeX) {
+                    this.sumBomb(x + 1, y + 1);
                 }
             }
         }
@@ -94,7 +117,7 @@ public class Field {
         for (int y = 0; y < this.sizeY; y++){
             str += "\n";
             for (int x = 0; x < this.sizeX; x++) {
-                str += " " + this.field[y][x].getName();
+                str += " " + (this.field[y][x].getName() == '0' ? ' ' : this.field[y][x].getName());
             }
         }
         str += "\n";

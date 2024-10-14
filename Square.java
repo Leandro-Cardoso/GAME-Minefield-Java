@@ -8,7 +8,7 @@ public class Square {
     private boolean isVisible;
 
     public Square(int x, int y) {
-        this.name = ' ';
+        this.name = '0';
         this.x = x;
         this.y = y;
         this.isVisible = false;
